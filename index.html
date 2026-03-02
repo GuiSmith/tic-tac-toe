@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Jogo da Velha</title>
+
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: Arial, Helvetica, sans-serif;
+    }
+
+    body {
+      background: #0b0f14;
+      color: white;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+    }
+
+    .container {
+      text-align: center;
+    }
+
+    h1 {
+      font-size: 48px;
+      margin-bottom: 10px;
+    }
+
+    .score {
+      color: #4aa8ff;
+      margin-bottom: 20px;
+    }
+
+    .card {
+      background: #111827;
+      padding: 30px;
+      border-radius: 15px;
+      box-shadow: 0 0 0 1px #1f2937;
+      width: 350px;
+    }
+
+    .turn {
+      color: #4aa8ff;
+      font-size: 20px;
+      margin-bottom: 20px;
+    }
+
+    .board {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 15px;
+      margin-bottom: 25px;
+    }
+
+    .cell {
+      width: 90px;
+      height: 90px;
+      background: #1f2937;
+      border-radius: 12px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      font-size: 36px;
+      cursor: pointer;
+      transition: 0.2s;
+    }
+
+    .cell:hover {
+      background: #273244;
+    }
+
+    .cell.x {
+      color: #4aa8ff;
+    }
+
+    .cell.o {
+      color: #ff4a4a;
+    }
+
+    button {
+      background: #1d8cf8;
+      border: none;
+      padding: 12px 25px;
+      border-radius: 10px;
+      color: white;
+      cursor: pointer;
+      font-size: 16px;
+      transition: 0.2s;
+    }
+
+    button:hover {
+      background: #0f7ae5;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="container">
+    <h1>Jogo da Velha</h1>
+    <div class="score">X vs O</div>
+
+    <div class="card">
+      <div class="turn" id="turnText">Vez de X</div>
+
+      <div class="board" id="board">
+        <!-- 9 células -->
+      </div>
+
+      <button onclick="resetGame()">Novo Jogo</button>
+    </div>
+  </div>
+
+  <script>
+    const board = document.getElementById("board");
+    const turnText = document.getElementById("turnText");
+
+    let currentPlayer = "X";
+    let gameActive = true;
+    let gameState = ["", "", "", "", "", "", "", "", ""];
+
+    const winningCombinations = [
+      [0,1,2],
+      [3,4,5],
+      [6,7,8],
+      [0,3,6],
+      [1,4,7],
+      [2,5,8],
+      [0,4,8],
+      [2,4,6]
+    ];
+
+    function createBoard() {
+      board.innerHTML = "";
+      gameState.forEach((cell, index) => {
+        const cellDiv = document.createElement("div");
+        cellDiv.classList.add("cell");
+        cellDiv.dataset.index = index;
+        cellDiv.innerText = cell;
+        cellDiv.addEventListener("click", handleCellClick);
+        board.appendChild(cellDiv);
+      });
+    }
+
+    function handleCellClick(e) {
+      const index = e.target.dataset.index;
+
+      if (gameState[index] !== "" || !gameActive) return;
+
+      gameState[index] = currentPlayer;
+      e.target.innerText = currentPlayer;
+      e.target.classList.add(currentPlayer.toLowerCase());
+
+      checkWinner();
+    }
+
+    function checkWinner() {
+      let roundWon = false;
+
+      for (let combination of winningCombinations) {
+        const [a, b, c] = combination;
+
+        if (
+          gameState[a] &&
+          gameState[a] === gameState[b] &&
+          gameState[a] === gameState[c]
+        ) {
+          roundWon = true;
+          break;
+        }
+      }
+
+      if (roundWon) {
+        turnText.innerText = `Jogador ${currentPlayer} venceu!`;
+        gameActive = false;
+        return;
+      }
+
+      if (!gameState.includes("")) {
+        turnText.innerText = "Empate!";
+        gameActive = false;
+        return;
+      }
+
+      currentPlayer = currentPlayer === "X" ? "O" : "X";
+      turnText.innerText = `Vez de ${currentPlayer}`;
+    }
+
+    function resetGame() {
+      currentPlayer = "X";
+      gameActive = true;
+      gameState = ["", "", "", "", "", "", "", "", ""];
+      turnText.innerText = "Vez de X";
+      createBoard();
+    }
+
+    createBoard();
+  </script>
+
+</body>
+</html>
