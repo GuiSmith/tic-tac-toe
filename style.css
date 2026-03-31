@@ -1,0 +1,90 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: Arial, Helvetica, sans-serif;
+}
+
+body {
+    background: #0b0f14;
+    color: white;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+}
+
+.container {
+    text-align: center;
+}
+
+h1 {
+    font-size: 48px;
+    margin-bottom: 10px;
+}
+
+.score {
+    color: #4aa8ff;
+    margin-bottom: 20px;
+}
+
+.card {
+    background: #111827;
+    padding: 30px;
+    border-radius: 15px;
+    box-shadow: 0 0 0 1px #1f2937;
+    width: 350px;
+}
+
+.turn {
+    color: #4aa8ff;
+    font-size: 20px;
+    margin-bottom: 20px;
+}
+
+.board {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 15px;
+    margin-bottom: 25px;
+}
+
+.cell {
+    width: 90px;
+    height: 90px;
+    background: #1f2937;
+    border-radius: 12px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 36px;
+    cursor: pointer;
+    transition: 0.2s;
+}
+
+.cell:hover {
+    background: #273244;
+}
+
+.cell.x {
+    color: #4aa8ff;
+}
+
+.cell.o {
+    color: #ff4a4a;
+}
+
+button {
+    background: #1d8cf8;
+    border: none;
+    padding: 12px 25px;
+    border-radius: 10px;
+    color: white;
+    cursor: pointer;
+    font-size: 16px;
+    transition: 0.2s;
+}
+
+button:hover {
+    background: #0f7ae5;
+}
